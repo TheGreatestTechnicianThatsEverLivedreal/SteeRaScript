@@ -7,10 +7,15 @@ import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 
 class MainActivity : Activity() {
+
+    private lateinit var rateInput: EditText
 
     companion object {
         private const val REQUEST_CODE_NOTIF = 101
@@ -24,11 +29,23 @@ class MainActivity : Activity() {
             setPadding(50, 50, 50, 50)
         }
 
+        // 1 Text Label + 1 Input Field
+        val label = TextView(this).apply {
+            text = "Polling Rate (µs) [0 = Max Hardware Rate]:"
+        }
+
+        rateInput = EditText(this).apply {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            setText("1000") // Default to 1000 µs (1 kHz)
+        }
+
+        // Button 1: Start
         val startBtn = Button(this).apply {
-            text = "Start Max-Rate Sampling"
+            text = "Start Sampling"
             setOnClickListener { checkAndStartService() }
         }
 
+        // Button 2: Stop
         val stopBtn = Button(this).apply {
             text = "Stop Sampling"
             setOnClickListener {
@@ -37,6 +54,8 @@ class MainActivity : Activity() {
             }
         }
 
+        layout.addView(label)
+        layout.addView(rateInput)
         layout.addView(startBtn)
         layout.addView(stopBtn)
         setContentView(layout)
@@ -53,8 +72,11 @@ class MainActivity : Activity() {
     }
 
     private fun startSensorService() {
+        val userRateUs = rateInput.text.toString().toIntOrNull() ?: 1000
+
         val serviceIntent = Intent(this, DefensiveSensorService::class.java).apply {
             putExtra(DefensiveSensorService.EXTRA_SENSOR_TYPE, Sensor.TYPE_ACCELEROMETER)
+            putExtra(DefensiveSensorService.EXTRA_POLLING_RATE_US, userRateUs)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(serviceIntent)
