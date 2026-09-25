@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.defensivesensor">
+
+    <!-- Allows polling sensors at frequencies higher than 200 Hz on Android 12+ (API 31+) -->
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+
+    <!-- Foreground service permissions -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Required for posting foreground service status notifications on Android 13+ (API 33+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="DefensiveSensorService"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <!-- Launcher Activity for runtime permission handling and service control -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Background sensor service with specialUse type -->
+        <service
+            android:name=".DefensiveSensorService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+
+            <!-- Subtype rationale required on API 34+ for specialUse -->
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Continuous on-device high-frequency sensor logging and hardware analysis" />
+
+        </service>
+
+    </application>
+
+</manifest><?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.defensivesensor">
+
+    <!-- Allows polling sensors at frequencies higher than 200 Hz on Android 12+ (API 31+) -->
+    <uses-permission android:name="android.permission.HIGH_SAMPLING_RATE_SENSORS" />
+
+    <!-- Foreground service permissions -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
+    <!-- Required for posting foreground service status notifications on Android 13+ (API 33+) -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:hardwareAccelerated="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="DefensiveSensorService"
+        android:supportsRtl="true"
+        android:theme="@android:style/Theme.DeviceDefault">
+
+        <!-- Launcher Activity for runtime permission handling and service control -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Background sensor service with specialUse type -->
+        <service
+            android:name=".DefensiveSensorService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+
+            <!-- Subtype rationale required on API 34+ for specialUse -->
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="Continuous on-device high-frequency sensor logging and hardware analysis" />
+
+        </service>
+
+    </application>
+
+</manifest>
